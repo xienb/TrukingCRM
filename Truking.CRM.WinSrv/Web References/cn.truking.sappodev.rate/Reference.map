@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://sappodev.truking.cn:50000/dir/wsdl?p=ic/5c5d55681ca73e2ebd09ddcbfb14023e" filename="SI_EXCHANGE_RATE_OUT.wsdl" />
+  </Results>
+</DiscoveryClientResultsFile>

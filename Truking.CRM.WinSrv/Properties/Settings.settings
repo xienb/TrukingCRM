@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Truking.CRM.WinSrv.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Truking_CRM_WinSrv_cn_truking_sappodev_selectsorder_SI_SEL_SORDER_OUTService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://sappodev.truking.cn:50000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_ERP_S4&amp;receiverParty=&amp;receiverService=&amp;interface=SI_SEL_SORDER_OUT&amp;interfaceNamespace=urn%3Aerp%3Aselect_sorder</Value>
+    </Setting>
+    <Setting Name="Truking_CRM_WinSrv_cn_truking_sappodev_recognition_SI_CUSTOMERRECOGNITION_OUTService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://sappodev.truking.cn:50000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_ERP_S4&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CUSTOMERRECOGNITION_OUT&amp;interfaceNamespace=urn%3Aerp%3Aselect_customerrecognition</Value>
+    </Setting>
+    <Setting Name="Truking_CRM_WinSrv_cn_truking_sappodev_rate_SI_EXCHANGE_RATE_OUTService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://sappodev.truking.cn:50000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_CRM&amp;receiverParty=&amp;receiverService=&amp;interface=SI_EXCHANGE_RATE_OUT&amp;interfaceNamespace=urn%3Acrm%3Aexchange_rate</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
