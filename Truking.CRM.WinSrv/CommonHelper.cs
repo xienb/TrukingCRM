@@ -27,6 +27,7 @@ namespace Truking.CRM.WinSrv
             sapService.Credentials = new NetworkCredential(GetSysPar(orgSvr, "SAP_API_UserID"), GetSysPar(orgSvr, "SAP_API_Password"));
             cn.truking.sappodev.selectsorder.DT_SEL_SORDER_REQ req = new cn.truking.sappodev.selectsorder.DT_SEL_SORDER_REQ();
             req.IT_DATA = jo;
+            sapService.Timeout = 360000;//6分钟超时
             cn.truking.sappodev.selectsorder.DT_SEL_SORDER_RSP rep = sapService.SI_SEL_SORDER_OUT(req);
             return rep.ET_RETURN;
         }
@@ -38,6 +39,7 @@ namespace Truking.CRM.WinSrv
             sapService.Credentials = new NetworkCredential(GetSysPar(orgSvr, "SAP_API_UserID"), GetSysPar(orgSvr, "SAP_API_Password"));
             cn.truking.sappodev.rate.DT_EXCHANGE_RATE_REQ req = new cn.truking.sappodev.rate.DT_EXCHANGE_RATE_REQ();
             req.IT_DATA = dt;
+            sapService.Timeout = 360000;//6分钟超时
             cn.truking.sappodev.rate.DT_EXCHANGE_RATE_RSP rep = sapService.SI_EXCHANGE_RATE_OUT(req);
             return rep.ET_RETURN;
         }
@@ -49,6 +51,7 @@ namespace Truking.CRM.WinSrv
             sapService.Credentials = new NetworkCredential(GetSysPar(orgSvr, "SAP_API_UserID"), GetSysPar(orgSvr, "SAP_API_Password"));
             cn.truking.sappodev.recognition.DT_SEL_CUSTOMERRECOGNITION_REQ req = new cn.truking.sappodev.recognition.DT_SEL_CUSTOMERRECOGNITION_REQ();
             req.IT_DATA = queryList;
+            sapService.Timeout = 360000;//6分钟超时
             cn.truking.sappodev.recognition.DT_SEL_CUSTOMERRECOGNITION_RSP rep = sapService.SI_CUSTOMERRECOGNITION_OUT(req);
             return rep.ET_RETURN;
         }
