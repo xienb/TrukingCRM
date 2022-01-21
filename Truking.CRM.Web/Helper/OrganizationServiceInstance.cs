@@ -9,16 +9,23 @@ namespace Truking.CRM.Web.Helper
 {
     public class OrganizationServiceInstance
     {
-        private CrmServiceClient _crmServiceClient;
+        //private CrmServiceClient _crmServiceClient;
         internal IOrganizationService OrgService 
         {
             get 
             {
-                if (_crmServiceClient==null || !_crmServiceClient.IsReady)
+                //if (_crmServiceClient==null || !_crmServiceClient.IsReady)
+                //{
+                //    Init();
+                //}
+                //return (IOrganizationService)_crmServiceClient.OrganizationServiceProxy;
+                using (CrmServiceClient conn = new CrmServiceClient(AppConfig.Get("CRMConnect")))
                 {
-                    Init();
+                    // Cast the proxy client to the IOrganizationService interface.
+                    IOrganizationService orgService = (IOrganizationService)conn.OrganizationWebProxyClient ??
+                                                      conn.OrganizationServiceProxy;
+                    return orgService;
                 }
-                return (IOrganizationService)_crmServiceClient.OrganizationServiceProxy;
             }
         }
         private OrganizationServiceInstance()
@@ -28,12 +35,12 @@ namespace Truking.CRM.Web.Helper
 
         private void Init()
         {
-            var crmServiceClient = new CrmServiceClient(AppConfig.Get("CRMConnect"));
-            if (!crmServiceClient.IsReady)
-            {
-                throw crmServiceClient.LastCrmException;
-            }
-            _crmServiceClient = crmServiceClient;
+            //var crmServiceClient = new CrmServiceClient(AppConfig.Get("CRMConnect"));
+            //if (!crmServiceClient.IsReady)
+            //{
+            //    throw crmServiceClient.LastCrmException;
+            //}
+            //_crmServiceClient = crmServiceClient;
         }
 
         public static OrganizationServiceInstance Instance { get { return Nested._instance; } }
