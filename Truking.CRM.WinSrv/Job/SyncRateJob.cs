@@ -37,7 +37,7 @@ namespace Truking.CRM.WinSrv.Job
                         if (isExistList != null && isExistList.Entities.Count > 0)
                         {
                             Entity oneEntity = isExistList[0];
-                            oneEntity["exchangerate"] = Convert.ToDecimal(oneRate["UKURS"].ToString());
+                            oneEntity["exchangerate"] = 1 / (Convert.ToDecimal(oneRate["UKURS"].ToString()));
                             OrganizationServiceAdmin.Update(oneEntity);
                             //Log.Info("SyncRateJob", FCURR + "更新成功");
                         }
