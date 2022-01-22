@@ -124,7 +124,7 @@ namespace Truking.CRM.Web.Controllers
                     DateTime endDT = Convert.ToDateTime(end);
                     int area = Convert.ToInt32(new_servicearea);
                     QueryExpression qe = new QueryExpression("new_srv_servicereport");
-                    qe.Criteria.AddCondition("createdon", ConditionOperator.GreaterThan, startDT);
+                    qe.Criteria.AddCondition("createdon", ConditionOperator.GreaterThan, startDT.AddSeconds(-1));
                     qe.Criteria.AddCondition("createdon", ConditionOperator.LessThan, endDT.AddDays(1));
                     qe.ColumnSet = new ColumnSet("createdon", "new_servicecontent", "new_name");//创建时间、服务内容、明日计划
 
