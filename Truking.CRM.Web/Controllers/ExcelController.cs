@@ -42,7 +42,7 @@ namespace Truking.CRM.Web.Controllers
                     QueryExpression qe = new QueryExpression("new_daily_report");
                     qe.ColumnSet = new ColumnSet("createdon", "new_degreeurgency", "new_type", "new_finish_work", "new_coordinate_work", "new_schedule");
                     qe.Criteria.AddCondition("new_servicearea", ConditionOperator.Equal, area);
-                    qe.Criteria.AddCondition("createdon", ConditionOperator.GreaterThan, startDT);
+                    qe.Criteria.AddCondition("createdon", ConditionOperator.GreaterThan, startDT.AddSeconds(-1));
                     qe.Criteria.AddCondition("createdon", ConditionOperator.LessThan, endDT.AddDays(1));
 
                     LinkEntity user = qe.AddLink("systemuser", "ownerid", "systemuserid", JoinOperator.LeftOuter);
