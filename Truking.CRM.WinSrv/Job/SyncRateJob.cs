@@ -17,13 +17,17 @@ namespace Truking.CRM.WinSrv.Job
         IOrganizationService OrganizationServiceAdmin;
         public void Execute(IJobExecutionContext context)
         {
-            var conStr = SqliteHelper.GetConfig("CRMConnect");
-            OrganizationServiceAdmin = new CrmServiceClient(conStr);
             try
             {
+                var conStr = SqliteHelper.GetConfig("CRMConnect");
+                CrmServiceClient conn = new CrmServiceClient(conStr);
+                OrganizationServiceAdmin = (IOrganizationService)conn.OrganizationWebProxyClient ??
+                                                      conn.OrganizationServiceProxy;
+
                 DateTime now = DateTime.Now;
                 string reqDate = now.ToString("yyyyMMdd");
                 string resp = CommonHelper.GetRate(OrganizationServiceAdmin, reqDate);
+                //Log.Info("Rate",resp);
                 JArray rateList = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(resp);
                 if (rateList != null && rateList.Count > 0)
                 {

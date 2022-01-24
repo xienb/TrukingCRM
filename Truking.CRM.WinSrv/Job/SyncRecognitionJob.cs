@@ -21,7 +21,9 @@ namespace Truking.CRM.WinSrv.Job
             try
             {
                 var conStr = SqliteHelper.GetConfig("CRMConnect");
-                OrganizationServiceAdmin = new CrmServiceClient(conStr);
+                CrmServiceClient conn = new CrmServiceClient(conStr);
+                OrganizationServiceAdmin = (IOrganizationService)conn.OrganizationWebProxyClient ??
+                                                      conn.OrganizationServiceProxy;
                 string current = CommonHelper.GetSysPar(OrganizationServiceAdmin, "SAP_API_RecognitionSync_StartDT");
                 DateTime currentDt = CommonHelper.ToDateTime2(current);
                 DateTime newTime = currentDt.AddDays(1);

@@ -106,6 +106,10 @@ namespace Truking.CRM.WinSrv
 
         public static string GetConfig(string key)
         {
+            if (key == "CRMConnect")
+            {
+                return @"AuthType=IFD;Url=https://crm.truking.com;HomeRealmUri=https://adfs.truking.com/adfs/services/trust/mex/;Username=TRUKING\crm_sap;Password=ctkj.999;ClientId=90afda93-1ce3-43f2-9e17-c0d5afdfdsa74db;ClientSecret=2-lxlYkg7MF05Fdafdsafdsaxj9g_eI0a37eJ2qnYDU3B1;TokenEndPoint=https://adfs.truking.com/adfs/oauth2/token;Resource=https://crm.truking.com/api/data/v8.2;Domain=TRUKING";  
+            }
             SQLiteConnection Connection = new SQLiteConnection(connStr);
             object rv = Connection.ExecuteScalar("select cvalue from config where ckey=@ckey", new { ckey = key.ToString() });
             if (rv != null)

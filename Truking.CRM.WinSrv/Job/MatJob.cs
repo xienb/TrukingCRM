@@ -21,7 +21,9 @@ namespace Truking.CRM.WinSrv.Job
             {
                 //Log.Info("MatJob", "进入物料job：" + DateTime.Now.ToString());
                 var conStr = SqliteHelper.GetConfig("CRMConnect");
-                OrganizationService = new CrmServiceClient(conStr);
+                CrmServiceClient conn = new CrmServiceClient(conStr);
+                OrganizationService = (IOrganizationService)conn.OrganizationWebProxyClient ??
+                                                      conn.OrganizationServiceProxy;
                 QueryExpression qe_i = new QueryExpression("new_biz_log");
                 qe_i.ColumnSet = new ColumnSet("new_biz_logid", "new_biz", "new_lev", "new_msg");
                 qe_i.Criteria.AddCondition("new_biz", ConditionOperator.Equal, "SAPSaveProductNew");
@@ -87,6 +89,7 @@ namespace Truking.CRM.WinSrv.Job
                         var ZTYPE = GetStr(rootModel, "ZTYPE");//自制/外购
                         var ZSFJM = GetStr(rootModel, "ZSFJM");//是否加贸
                         var MAKTX = GetStr(rootModel, "MAKTX");//物料描述
+                        var BISMT = GetStr(rootModel, "BISMT");//旧料号
 
                         var PRODH1 = GetStr(rootModel, "PRODH1");//物料大类编码
                         var PRODH1_TEXT = GetStr(rootModel, "PRODH1_TEXT");//物料大类名称
@@ -197,6 +200,7 @@ namespace Truking.CRM.WinSrv.Job
                         entity["new_drawingnumber"] = ZTUHAO;//配件图号
                         entity["new_brand"] = ZPINPAI;//品牌
                         entity["description"] = LONGTEXT;//对接说明
+                        entity["new_oldcode"] = BISMT;//旧料号
 
                         //int? new_selfmadeorpurchased = GetPicklistIntValue(OrganizationService, "product", "new_selfmadeorpurchased", ZTYPE);
                         //if (new_selfmadeorpurchased != null)
