@@ -204,6 +204,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Base\CustomsJsonResult.cs" />
+    <Compile Include="Base\TKAccountApiController.cs" />
     <Compile Include="Base\TKApiController.cs" />
     <Compile Include="Base\TKController.cs" />
     <Compile Include="Base\TKSignApiController.cs" />
@@ -215,12 +216,14 @@
     <Compile Include="Controllers\FileInfoController.cs" />
     <Compile Include="Controllers\FileSrvController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReceiptController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\AppConfig.cs" />
     <Compile Include="Helper\CommonHelper.cs" />
     <Compile Include="Helper\EncryptHelper.cs" />
+    <Compile Include="Helper\JObjectExtension.cs" />
     <Compile Include="Helper\OrganizationServiceInstance.cs" />
     <Compile Include="Model\AdModel.cs" />
     <Compile Include="Model\Chunk.cs" />

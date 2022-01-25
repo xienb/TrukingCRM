@@ -7,6 +7,35 @@ namespace Truking.CRM.Web.Helper
 {
     public static class CommonHelper
     {
+        /// <summary>
+        /// 获取时间戳
+        /// </summary>
+        /// <returns></returns>
+        public static string GetTimeStamp()
+        {
+            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return (Convert.ToInt64(ts.TotalMilliseconds)).ToString();
+        }
+
+        /// <summary>
+        /// 判断时间戳与服务器时间是否大于5分钟
+        /// </summary>
+        /// <param name="timestamp"></param>
+        /// <returns></returns>
+        public static bool IsTimeStampRight(string timestamp)
+        {
+            DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0).AddMilliseconds(Convert.ToDouble(timestamp));
+            TimeSpan ts = dt - DateTime.UtcNow;
+            var abs = Math.Abs(ts.TotalSeconds);
+            return !(abs > 300);
+        }
+
+        /// <summary>
+        /// 获取选项值的中文名
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="attribute"></param>
+        /// <returns></returns>
         public static string GetPicklistName(this Entity entity, string attribute)
         {
             if (entity.Contains(attribute))
