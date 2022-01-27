@@ -20,6 +20,7 @@ namespace Truking.CRM.WinSrv.Job
         {
             try
             {
+                //Log.Info("SyncRecognitionJob", "jobin");
                 var conStr = SqliteHelper.GetConfig("CRMConnect");
                 CrmServiceClient conn = new CrmServiceClient(conStr);
                 OrganizationServiceAdmin = (IOrganizationService)conn.OrganizationWebProxyClient ??
@@ -38,10 +39,10 @@ namespace Truking.CRM.WinSrv.Job
                 reqJo.Add("EBUDAT", newTime.ToString("yyyyMMdd"));
                 string reqStr = reqJo.ToString();
                 string resp = CommonHelper.GetRecognition(OrganizationServiceAdmin, "[" + reqStr + "]");
+                Log.Info("SyncRecognitionJob", "请求参数:" + reqStr + "SAP返回数据:" + resp);
                 JArray arrayList = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(resp);
                 if (arrayList != null && arrayList.Count > 0)
                 {
-                    Log.Info("SyncRecognitionJob", "SAP返回数据:" + resp);
                     //批量提交
                     var oneSaveReq = new ExecuteMultipleRequest();
                     oneSaveReq.Settings = new ExecuteMultipleSettings()
@@ -156,22 +157,21 @@ namespace Truking.CRM.WinSrv.Job
                     //oneSaveReq.Requests = requestCollection;
                     //var respExecute = OrganizationServiceAdmin.Execute(oneSaveReq);//请求结果
                     //Log.InfoMsg("同步认款数据保存返回："+Newtonsoft.Json.JsonConvert.SerializeObject(respExecute.Results));
-
-                    //更新时间戳
-                    QueryExpression query = new QueryExpression("new_systemparameter");
-                    query.Criteria.AddCondition("new_name", ConditionOperator.Equal, "SAP_API_RecognitionSync_StartDT");
-                    EntityCollection entitylist = OrganizationServiceAdmin.RetrieveMultiple(query);
-
-                    if (entitylist != null && entitylist.Entities.Count > 0)
-                    {
-                        Entity updateDt = entitylist.Entities[0];
-                        updateDt["new_value"] = newTime.ToString("yyyyMMdd");
-                        OrganizationServiceAdmin.Update(updateDt);
-                    }
                 }
-                else
+
+                //更新时间戳
+                QueryExpression query = new QueryExpression("new_systemparameter");
+                query.Criteria.AddCondition("new_name", ConditionOperator.Equal, "SAP_API_RecognitionSync_StartDT");
+                EntityCollection entitylist = OrganizationServiceAdmin.RetrieveMultiple(query);
+
+                if (entitylist != null && entitylist.Entities.Count > 0)
                 {
+                    Entity updateDt = entitylist.Entities[0];
+                    updateDt["new_value"] = newTime.ToString("yyyyMMdd");
+                    OrganizationServiceAdmin.Update(updateDt);
                 }
+
+
             }
             catch (Exception ex)
             {

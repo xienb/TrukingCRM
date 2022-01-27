@@ -25,8 +25,8 @@ namespace Truking.CRM.WinSrv
         /// 服务是否开启标志
         /// </summary>
         bool isOpen = true;
-        ISchedulerFactory sf;
-        IScheduler sched;
+        public ISchedulerFactory sf;
+        public IScheduler sched;
 
         private QuartzInstance()
         {
@@ -69,14 +69,14 @@ namespace Truking.CRM.WinSrv
                 IJobDetail job2 = JobBuilder.Create<SyncOrderJob>().Build();
                 ITrigger trigger2 = TriggerBuilder.Create()
                    .StartNow()
-                   .WithSimpleSchedule(x => x.WithIntervalInSeconds(30).RepeatForever())
+                   .WithSimpleSchedule(x => x.WithIntervalInSeconds(60).RepeatForever())
                    .Build();
                 sched.ScheduleJob(job2, trigger2);
 
                 IJobDetail job3 = JobBuilder.Create<SyncRecognitionJob>().Build();
                 ITrigger trigger3 = TriggerBuilder.Create()
                    .StartNow()
-                   .WithSimpleSchedule(x => x.WithIntervalInHours(1).RepeatForever())
+                   .WithSimpleSchedule(x => x.WithIntervalInSeconds(30).RepeatForever())
                    .Build();
                 sched.ScheduleJob(job3, trigger3);
 

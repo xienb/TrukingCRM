@@ -26,6 +26,7 @@ namespace Truking.CRM.WinSrv
 
         protected override void OnStop()
         {
+            QuartzInstance.Instance.sched.Shutdown();
         }
     }
 }
