@@ -205,5 +205,25 @@ namespace Truking.CRM.Web.Controllers
                 return Content(ex.Message);
             }
         }
+
+        /// <summary>
+        /// 销售日志下载导出的文件
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult GetFile(string id)
+        {
+            var file = AppDomain.CurrentDomain.BaseDirectory + @"saleslog\" + id;
+            if (System.IO.File.Exists(file))
+            {
+                FileStream stream = System.IO.File.OpenRead(file);
+
+                return File(stream, "application/x-xls", "销售日志.xls");
+            }
+            else
+            {
+                return Content("文件不存在");
+            }
+        }
     }
 }

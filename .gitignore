@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Truking.CRM.Web/saleslog/bc1ef373dc8e415593c27e1f31fc2f38.xls
+/Truking.CRM.Web/saleslog/6213d8ec5dd14208921650507169e3b1.xls

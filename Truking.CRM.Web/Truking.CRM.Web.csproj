@@ -212,6 +212,7 @@
     <Compile Include="Controllers\CampaignresponseController.cs" />
     <Compile Include="Controllers\CRMAttachmentController.cs" />
     <Compile Include="Controllers\EdocController.cs" />
+    <Compile Include="Controllers\Excel2Controller.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
     <Compile Include="Controllers\FileInfoController.cs" />
     <Compile Include="Controllers\FileSrvController.cs" />
