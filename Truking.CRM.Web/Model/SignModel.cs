@@ -24,6 +24,10 @@ namespace Truking.CRM.Web.Model
         /// </summary>
         public string phone { get; set; }
         /// <summary>
+        /// 电子邮件
+        /// </summary>
+        public string emailaddress { get; set; }
+        /// <summary>
         /// 数量
         /// </summary>
         public int? num { get; set; }

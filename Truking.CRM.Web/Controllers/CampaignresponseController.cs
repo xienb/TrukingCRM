@@ -43,6 +43,7 @@ namespace Truking.CRM.Web.Controllers
                         entity["companyname"] = model.corp;
                         entity["lastname"] = model.fullname;
                         entity["telephone"] = model.phone;
+                        entity["emailaddress"] = model.emailaddress;
                         entity["subject"] = model.fullname+ "_"+ model.corp;
                         if (model.num != null)
                         {
