@@ -24,24 +24,27 @@ namespace Truking.CRM.Web.Controllers
         {
             WebRv rv = new WebRv();
             List<MyFileInfo> list = new List<MyFileInfo>();
-            var basePath = AppDomain.CurrentDomain.BaseDirectory + $@"tmp\{model.entityName}\{model.entityId}";
-            if (Directory.Exists(basePath))
+            if (!string.IsNullOrEmpty(model.entityName) && !string.IsNullOrEmpty(model.entityId))
             {
-                DirectoryInfo rootDir = new DirectoryInfo(basePath);
-
-                DirectoryInfo[] directs = rootDir.GetDirectories();
-                foreach (DirectoryInfo fileDir in directs)
+                var basePath = AppDomain.CurrentDomain.BaseDirectory + $@"tmp\{model.entityName}\{model.entityId}";
+                if (Directory.Exists(basePath))
                 {
-                    FileInfo[] files = fileDir.GetFiles();
-                    if (files.Length > 0)
+                    DirectoryInfo rootDir = new DirectoryInfo(basePath);
+
+                    DirectoryInfo[] directs = rootDir.GetDirectories();
+                    foreach (DirectoryInfo fileDir in directs)
                     {
-                        MyFileInfo myFileInfo = new MyFileInfo();
-                        myFileInfo.entityId = model.entityId;
-                        myFileInfo.entityName = model.entityName;
-                        myFileInfo.fileId = fileDir.Name;
-                        myFileInfo.fileName = files[0].Name;
-                        myFileInfo.fileSize = files[0].Length;
-                        list.Add(myFileInfo);
+                        FileInfo[] files = fileDir.GetFiles();
+                        if (files.Length > 0)
+                        {
+                            MyFileInfo myFileInfo = new MyFileInfo();
+                            myFileInfo.entityId = model.entityId;
+                            myFileInfo.entityName = model.entityName;
+                            myFileInfo.fileId = fileDir.Name;
+                            myFileInfo.fileName = files[0].Name;
+                            myFileInfo.fileSize = files[0].Length;
+                            list.Add(myFileInfo);
+                        }
                     }
                 }
             }
