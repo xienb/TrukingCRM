@@ -34,6 +34,36 @@ namespace Truking.CRM.Web.Controllers
         }
 
         /// <summary>
+        /// 获取单据附件个数
+        /// </summary>
+        /// <param name="entityName"></param>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult EntityFileCount(string entityName,string entityId)
+        {
+            WebRv rv = new WebRv();
+            int fileCount = 0;
+            if (!string.IsNullOrEmpty(entityName) && !string.IsNullOrEmpty(entityId))
+            {
+                var basePath = AppDomain.CurrentDomain.BaseDirectory + $@"tmp\{entityName}\{entityId}";
+                if (Directory.Exists(basePath))
+                {
+                    DirectoryInfo rootDir = new DirectoryInfo(basePath);
+
+                    DirectoryInfo[] directs = rootDir.GetDirectories();
+                    foreach (DirectoryInfo fileDir in directs)
+                    {
+                        FileInfo[] files = fileDir.GetFiles();
+                        fileCount = files.Length;
+                    }
+                }
+            }
+            rv.data = fileCount;
+            return Json(rv);
+        }
+
+        /// <summary>
         /// 文件模板列表跳转
         /// </summary>
         /// <param name="OrgLCID"></param>
