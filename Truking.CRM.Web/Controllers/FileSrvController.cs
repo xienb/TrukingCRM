@@ -52,11 +52,7 @@ namespace Truking.CRM.Web.Controllers
                     DirectoryInfo rootDir = new DirectoryInfo(basePath);
 
                     DirectoryInfo[] directs = rootDir.GetDirectories();
-                    foreach (DirectoryInfo fileDir in directs)
-                    {
-                        FileInfo[] files = fileDir.GetFiles();
-                        fileCount = files.Length;
-                    }
+                    fileCount = directs.Length;
                 }
             }
             rv.data = fileCount;
