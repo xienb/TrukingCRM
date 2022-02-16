@@ -53,6 +53,35 @@ namespace Truking.CRM.Web.Controllers
         }
 
         /// <summary>
+        /// 获取附件个数
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public WebRv EntityFileCount(EntityInfo model)
+        {
+            WebRv rv = new WebRv();
+            int fileCount = 0;
+            if (!string.IsNullOrEmpty(model.entityName) && !string.IsNullOrEmpty(model.entityId))
+            {
+                var basePath = AppDomain.CurrentDomain.BaseDirectory + $@"tmp\{model.entityName}\{model.entityId}";
+                if (Directory.Exists(basePath))
+                {
+                    DirectoryInfo rootDir = new DirectoryInfo(basePath);
+
+                    DirectoryInfo[] directs = rootDir.GetDirectories();
+                    foreach (DirectoryInfo fileDir in directs)
+                    {
+                        FileInfo[] files = fileDir.GetFiles();
+                        fileCount = files.Length;
+                    }
+                }
+            }
+            rv.data = fileCount;
+            return rv;
+        }
+
+        /// <summary>
         /// 通过组织服务获取实体的模板文件列表
         /// </summary>
         /// <param name="model"></param>
