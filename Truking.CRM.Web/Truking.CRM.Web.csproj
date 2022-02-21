@@ -243,6 +243,7 @@
     <Compile Include="Controllers\EdocController.cs" />
     <Compile Include="Controllers\Excel2Controller.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
+    <Compile Include="Controllers\ExcelExportController.cs" />
     <Compile Include="Controllers\FileInfoController.cs" />
     <Compile Include="Controllers\FileSrvController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Helper\CommonHelper.cs" />
     <Compile Include="Helper\EncryptHelper.cs" />
     <Compile Include="Helper\JObjectExtension.cs" />
+    <Compile Include="Helper\NpoiExtend.cs" />
     <Compile Include="Helper\OrganizationServiceInstance.cs" />
     <Compile Include="Model\AdModel.cs" />
     <Compile Include="Model\Chunk.cs" />

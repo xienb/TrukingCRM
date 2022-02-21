@@ -132,7 +132,7 @@ namespace Truking.CRM.Web.Controllers
             }
             catch (Exception ex)
             {
-                rv.code = ResponseCode.failure;
+                rv.code = ResponseCode.error;
                 rv.msg = ex.Message;
             }
             return rv;

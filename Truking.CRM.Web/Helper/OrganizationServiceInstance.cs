@@ -10,6 +10,7 @@ namespace Truking.CRM.Web.Helper
     public class OrganizationServiceInstance
     {
         //private CrmServiceClient _crmServiceClient;
+        public Guid UserId { get; set; }
         internal IOrganizationService OrgService 
         {
             get 
@@ -21,6 +22,7 @@ namespace Truking.CRM.Web.Helper
                 //return (IOrganizationService)_crmServiceClient.OrganizationServiceProxy;
                 using (CrmServiceClient conn = new CrmServiceClient(AppConfig.Get("CRMConnect")))
                 {
+                    UserId = conn.GetMyCrmUserId();
                     // Cast the proxy client to the IOrganizationService interface.
                     IOrganizationService orgService = (IOrganizationService)conn.OrganizationWebProxyClient ??
                                                       conn.OrganizationServiceProxy;
