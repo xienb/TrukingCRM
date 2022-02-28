@@ -187,11 +187,25 @@ namespace Truking.CRM.Web.Controllers
                         rowi.CreateCell(2).SetCellValue(current.GetAliasAttributeValue<string>("user.new_jobnumber"));
                         rowi.CreateCell(3).SetCellValue(current.GetAliasAttributeValue<string>("dept.name"));
                         rowi.CreateCell(4).SetCellValue(current.GetAliasAttributeValue<string>("acc.name"));
-                        rowi.CreateCell(5).SetCellValue(current.FormattedValues["workorder.new_prioritycode"]); //紧急程度 new_prioritycode
+                        if (current.FormattedValues.ContainsKey("workorder.new_prioritycode"))
+                        {
+                            rowi.CreateCell(5).SetCellValue(current.FormattedValues["workorder.new_prioritycode"]); //紧急程度 new_prioritycode
+                        }
+                        else
+                        {
+                            rowi.CreateCell(5).SetCellValue(""); //紧急程度 new_prioritycode
+                        }
                         rowi.CreateCell(6).SetCellValue(current.GetAttributeValue<string>("new_servicecontent"));//服务内容
                         rowi.CreateCell(7).SetCellValue(current.GetAliasAttributeValue<string>("workorder.new_name"));//工单号
                         rowi.CreateCell(8).SetCellValue(current.GetAttributeValue<string>("new_name"));//明日计划
-                        rowi.CreateCell(9).SetCellValue(current.FormattedValues["workorder.new_type"]);//服务类型
+                        if (current.FormattedValues.ContainsKey("workorder.new_type"))
+                        {
+                            rowi.CreateCell(9).SetCellValue(current.FormattedValues["workorder.new_type"]);//服务类型
+                        }
+                        else
+                        {
+                            rowi.CreateCell(9).SetCellValue("");//服务类型
+                        }
                     }
                     MemoryStream BookStream = new MemoryStream();
                     workbook2007.Write(BookStream);
