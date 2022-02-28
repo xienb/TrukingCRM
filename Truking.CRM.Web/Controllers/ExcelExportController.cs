@@ -170,14 +170,17 @@ namespace Truking.CRM.Web.Controllers
                                     var col5 = getCellValue(sheet, row.GetCell(headerDic["品牌厂家"]));
                                     var col6 = getCellValue(sheet, row.GetCell(headerDic["所用设备型号"]));
                                     var datecell = row.GetCell(headerDic["设备出厂年月"]);
-                                    if (datecell == null) continue;
-                                    var col7 = datecell.DateCellValue;
+                                    DateTime? col7 = null;
+                                    if (datecell != null && datecell.DateCellValue !=null)
+                                    {
+                                        col7 = datecell.DateCellValue;
+                                    }
                                     var col8 = getCellValue(sheet, row.GetCell(headerDic["厂区"]));
                                     var col9 = getCellValue(sheet, row.GetCell(headerDic["使用对接人"]));
                                     var col10 = getCellValue(sheet, row.GetCell(headerDic["使用对接人联系方式"]));
                                     var col11 = getCellValue(sheet, row.GetCell(headerDic["备注（安装位置、相关说明等）"]));
 
-                                    if (string.IsNullOrEmpty(col4) || string.IsNullOrEmpty(col6) || string.IsNullOrEmpty(col8))
+                                    if (string.IsNullOrEmpty(col0) || string.IsNullOrEmpty(col1)|| string.IsNullOrEmpty(col2) || string.IsNullOrEmpty(col4))
                                     {
                                         //必填项为空
                                         continue;
@@ -189,7 +192,10 @@ namespace Truking.CRM.Web.Controllers
                                     newLine["new_quantity"] = Convert.ToInt32(col4);//数量
                                     newLine["new_manufacturer"] = col5;//品牌厂家
                                     newLine["new_name"] = col6;//所用设备型号
-                                    newLine["new_deliverydate"] = col7;//设备出厂年月
+                                    if (col7 != null)
+                                    {
+                                        newLine["new_deliverydate"] = col7.Value;//设备出厂年月
+                                    }
                                     newLine["new_plantarea"] = col8;//厂区
                                     newLine["new_buttjoint"] = col9;//使用对接人
                                     newLine["new_buttjointtelephone"] = col10;//使用对接人联系方式
