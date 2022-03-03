@@ -104,6 +104,10 @@ namespace Truking.CRM.Web.Controllers
                 contract.EntityAlias = "contract";
                 contract.Columns.AddColumns("new_customercontractno", "new_contractno");//第一个是客户合同号
 
+                LinkEntity address = contract.AddLink("new_address", "new_address_id", "new_addressid", JoinOperator.LeftOuter);
+                address.EntityAlias = "address";
+                address.Columns.AddColumns("new_contact", "new_contactphone", "new_province_id", "new_city_id", "new_county_id", "new_address");
+
                 var ec = OrganizationServiceInstance.Instance.OrgService.RetrieveMultiple(isExistMst);
                 if (ec != null && ec.Entities.Count > 0)
                 {
@@ -116,7 +120,56 @@ namespace Truking.CRM.Web.Controllers
                     }
                     root.Add("new_customercontractno", main.GetAliasAttributeValue<string>("contract.new_customercontractno"));
                     root.Add("modifiedon", main.GetAttributeValue<DateTime>("modifiedon").ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"));
+                    if (main.Contains("address.new_contact"))
+                    {
+                        root.Add("new_contact", main.GetAliasAttributeValue<string>("address.new_contact").Trim());
+                    }
+                    else
+                    {
+                        root.Add("new_contact", null);
+                    }
+                    if (main.Contains("address.new_contactphone"))
+                    {
+                        root.Add("new_contactphone", main.GetAliasAttributeValue<string>("address.new_contactphone").Trim());
+                    }
+                    else
+                    {
+                        root.Add("new_contactphone", null);
+                    }
+                    if (main.Contains("address.new_address"))
+                    {
+                        root.Add("new_address", main.GetAliasAttributeValue<string>("address.new_address").Trim());
+                    }
+                    else
+                    {
+                        root.Add("new_address", null);
+                    }
 
+           
+                    if (main.GetAliasAttributeValue<EntityReference>("address.new_province_id") != null)
+                    {
+                        root.Add("new_province_id", main.GetAliasAttributeValue<EntityReference>("address.new_province_id").Name);
+                    }
+                    else
+                    {
+                        root.Add("new_province_id", null);
+                    }
+                    if (main.GetAliasAttributeValue<EntityReference>("address.new_city_id") != null)
+                    {
+                        root.Add("new_city_id", main.GetAliasAttributeValue<EntityReference>("address.new_city_id").Name);
+                    }
+                    else
+                    {
+                        root.Add("new_city_id", null);
+                    }
+                    if (main.GetAliasAttributeValue<EntityReference>("address.new_county_id") != null)
+                    {
+                        root.Add("new_county_id", main.GetAliasAttributeValue<EntityReference>("address.new_county_id").Name);
+                    }
+                    else
+                    {
+                        root.Add("new_county_id", null);
+                    }
                     HandleDetail(main, root);
                     rv.data = root;
                 }
