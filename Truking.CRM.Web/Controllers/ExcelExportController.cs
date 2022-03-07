@@ -160,7 +160,8 @@ namespace Truking.CRM.Web.Controllers
                                     // 0-11
                                     Entity newLine = new Entity("new_srv_accessoriesdemandline");
                                     newLine["new_srv_accessoriesdemand_id"] = new EntityReference("new_srv_accessoriesdemand", mainEntity.Id);
-                                    var col0 = getCellValue(sheet, row.GetCell(headerDic["序号"]));
+                                    string xh = Regex.Replace(getCellValue(sheet, row.GetCell(headerDic["序号"])), @"[^0-9]+", "");
+                                    var col0 = xh;
                                     var col1 = getCellValue(sheet, row.GetCell(headerDic["零件名称"]));
                                     var col2 = getCellValue(sheet, row.GetCell(headerDic["零件型号"]));
                                     var col3 = getCellValue(sheet, row.GetCell(headerDic["物料编码"]));
