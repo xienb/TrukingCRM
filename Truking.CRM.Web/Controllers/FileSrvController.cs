@@ -123,6 +123,75 @@ namespace Truking.CRM.Web.Controllers
             }
         }
 
+
+        /// <summary>
+        /// 加签名验证的方式下载crm附件
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="timestamp"></param>
+        /// <param name="sign"></param>
+        /// <returns></returns>
+        public ActionResult GetFileWithSign(string id,string timestamp,string sign)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(timestamp) || string.IsNullOrEmpty(sign))
+                {
+                    return Content("参数不能为空");
+                }
+                else
+                {
+                    if (!CommonHelper.IsTimeStampRight(timestamp))
+                    {
+                        return Content("时间戳格式不正确");
+                    }
+                    else
+                    {
+                        var checkSign = EncryptHelper.MD5Encrypt("OA" + id + timestamp);
+                        if (checkSign != sign.ToUpper())
+                        {
+                            return Content("签名错误");
+                        }
+                        else
+                        {
+                            QueryExpression isExistMst = new QueryExpression("annotation");
+                            isExistMst.ColumnSet = new ColumnSet("filename", "documentbody", "isdocument", "mimetype", "filesize");
+                            isExistMst.Criteria.AddCondition("annotationid", ConditionOperator.Equal, new Guid(id));
+                            EntityCollection isExistList = OrganizationServiceInstance.Instance.OrgService.RetrieveMultiple(isExistMst);
+                            if (isExistList != null && isExistList.Entities.Count > 0)
+                            {
+                                Entity fileEntity = isExistList.Entities[0];
+
+                                bool isDoc = fileEntity.GetAttributeValue<Boolean>("isdocument");
+                                if (isDoc)
+                                {
+                                    var mimetype = fileEntity.GetAttributeValue<string>("mimetype");
+                                    var filesize = fileEntity.GetAttributeValue<int>("filesize");
+                                    var fileName = fileEntity.GetAttributeValue<string>("filename");
+                                    var documentbody = fileEntity.GetAttributeValue<string>("documentbody");
+                                    byte[] pReadByte = Convert.FromBase64String(documentbody);
+                                    var contenttype = GetContentType(fileName);
+                                    return File(pReadByte, contenttype, fileName);
+                                }
+                                else
+                                {
+                                    return Content("该id不是文件");
+                                }
+                            }
+                            else
+                            {
+                                return Content("文件不存在");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message + ex.StackTrace);
+            }
+        }
+
         /// <summary>
         /// 下载大附件
         /// </summary>
