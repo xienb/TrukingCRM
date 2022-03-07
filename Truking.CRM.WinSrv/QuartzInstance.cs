@@ -86,6 +86,14 @@ namespace Truking.CRM.WinSrv
                    .WithSimpleSchedule(x => x.WithIntervalInHours(12).RepeatForever())
                    .Build();
                 sched.ScheduleJob(job4, trigger4);
+
+
+                IJobDetail job5 = JobBuilder.Create<ProjectmgnJob>().Build();
+                ITrigger trigger5 = TriggerBuilder.Create()
+                   .StartNow()
+                   .WithSimpleSchedule(x => x.WithIntervalInHours(12).RepeatForever())
+                   .Build();
+                sched.ScheduleJob(job5, trigger5);
             }
             catch (Exception ex)
             {

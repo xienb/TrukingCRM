@@ -129,6 +129,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Job\ProjectmgnJob.cs" />
     <Compile Include="Job\SyncOrderJob.cs" />
     <Compile Include="Job\SyncRateJob.cs" />
     <Compile Include="Job\SyncRecognitionJob.cs" />
