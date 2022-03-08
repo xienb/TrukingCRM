@@ -2,6 +2,7 @@
 using System.Text;
 using System.Security.Cryptography;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Query;
 
 namespace Truking.CRM.Web.Helper
 {
@@ -81,6 +82,28 @@ namespace Truking.CRM.Web.Helper
 
             return Encoding.UTF8.GetString(resultArray);
         }
-        
+
+        /// <summary>
+        /// 获取系统参数
+        /// </summary>
+        /// <param name="organizationService"></param>
+        /// <param name="parKey"></param>
+        /// <returns></returns>
+        public static string GetSysPar(IOrganizationService organizationService, string parKey)
+        {
+            QueryExpression query = new QueryExpression("new_systemparameter");
+            query.ColumnSet = new ColumnSet("new_value");
+            query.Criteria.AddCondition("new_name", ConditionOperator.Equal, parKey);
+            EntityCollection entitylist = organizationService.RetrieveMultiple(query);
+            if (entitylist != null && entitylist.Entities.Count > 0)
+            {
+                Entity updateDt = entitylist.Entities[0];
+                return updateDt.GetAttributeValue<string>("new_value");
+            }
+            else
+            {
+                return "";
+            }
+        }
     }
 }

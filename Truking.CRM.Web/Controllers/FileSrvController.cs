@@ -40,7 +40,7 @@ namespace Truking.CRM.Web.Controllers
         /// <param name="entityId"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult EntityFileCount(string entityName,string entityId)
+        public JsonResult EntityFileCount(string entityName, string entityId)
         {
             WebRv rv = new WebRv();
             int fileCount = 0;
@@ -87,34 +87,12 @@ namespace Truking.CRM.Web.Controllers
         {
             try
             {
-                QueryExpression isExistMst = new QueryExpression("annotation");
-                isExistMst.ColumnSet = new ColumnSet("filename", "documentbody", "isdocument", "mimetype", "filesize");
-                isExistMst.Criteria.AddCondition("annotationid", ConditionOperator.Equal, new Guid(id));
-                EntityCollection isExistList = OrganizationServiceInstance.Instance.OrgService.RetrieveMultiple(isExistMst);
-                if (isExistList != null && isExistList.Entities.Count > 0)
-                {
-                    Entity fileEntity = isExistList.Entities[0];
-
-                    bool isDoc = fileEntity.GetAttributeValue<Boolean>("isdocument");
-                    if (isDoc)
-                    {
-                        var mimetype = fileEntity.GetAttributeValue<string>("mimetype");
-                        var filesize = fileEntity.GetAttributeValue<int>("filesize");
-                        var fileName = fileEntity.GetAttributeValue<string>("filename");
-                        var documentbody = fileEntity.GetAttributeValue<string>("documentbody");
-                        byte[] pReadByte = Convert.FromBase64String(documentbody);
-                        var contenttype = GetContentType(fileName);
-                        return File(pReadByte, contenttype, fileName);
-                    }
-                    else
-                    {
-                        return Content("该id不是文件");
-                    }
-                }
-                else
-                {
-                    return Content("文件不存在");
-                }
+                var org = OrganizationServiceInstance.Instance.OrgService;
+                //重定向到oa
+                string crmFileSrvUrl = CommonHelper.GetSysPar(org, "CRM_FileSrv_URL_Domain");
+                string OA_API_BaseUrl = CommonHelper.GetSysPar(org, "OA_API_BaseUrl");
+                var oaurl = OA_API_BaseUrl + "/tk/attachment.do?method=viewCrmAttchment&crmurl=" + HttpUtility.UrlEncode(crmFileSrvUrl + "/FileSrv/GetFileWithSign?id=" + id);
+                return Redirect(oaurl);
 
             }
             catch (Exception ex)
@@ -131,7 +109,7 @@ namespace Truking.CRM.Web.Controllers
         /// <param name="timestamp"></param>
         /// <param name="sign"></param>
         /// <returns></returns>
-        public ActionResult GetFileWithSign(string id,string timestamp,string sign)
+        public ActionResult GetFileWithSign(string id, string timestamp, string sign)
         {
             try
             {
