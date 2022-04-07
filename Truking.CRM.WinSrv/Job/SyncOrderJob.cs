@@ -287,7 +287,7 @@ namespace Truking.CRM.WinSrv.Job
                 EntityCollection delList = OrganizationServiceAdmin.RetrieveMultiple(delQuery);
                 if (delList.Entities != null && delList.Entities.Count > 0)
                 {
-                    return;//无法对明细修改，因为有可能单据为非制单状态
+                    //return;//无法对明细修改，因为有可能单据为非制单状态
                     foreach (var delOne in delList.Entities)
                     {
                         orc.Add(new DeleteRequest() { Target = new EntityReference("new_ord_saleorderline", delOne.Id) });

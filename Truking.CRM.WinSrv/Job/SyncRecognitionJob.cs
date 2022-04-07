@@ -57,8 +57,13 @@ namespace Truking.CRM.WinSrv.Job
                     {
                         try
                         {
+                            //exchangerate  汇率字段
+                            #region 主键
                             var BELNR = oneOrd.GetStr("BELNR");//认款凭证编码
                             var BUKRS = oneOrd.GetStr("BUKRS");//公司代码
+                            var GJAHR = oneOrd.GetStr("GJAHR");//年度
+                            var BUZEI = oneOrd.GetStr("BUZEI");//行项目编号
+                            #endregion
                             var KUNNR = oneOrd.GetStr("KUNNR");//客户
                             var BLART = oneOrd.GetStr("BLART");//凭证类型
                             var BUDAT = oneOrd.GetStr("BUDAT");//认款日期
@@ -66,16 +71,21 @@ namespace Truking.CRM.WinSrv.Job
                             var AUFNR = oneOrd.GetStr("AUFNR");//内部订单
                             var BSTNK = oneOrd.GetStr("BSTNK");//销售合同
                             var WRBTR = Convert.ToDecimal(oneOrd.GetStr("WRBTR"));//认款金额 业务货币
-                            var DMBTR = Convert.ToDecimal(oneOrd.GetStr("DMBTR"));//认款金额 本币
+                            var DMBTR = Convert.ToDecimal(oneOrd.GetStr("DMBTR"));//认款金额 本币（人民币）
                             var ZSDFJDMC = oneOrd.GetStr("ZSDFJDMC");//款项阶段
                             var WAERS = oneOrd.GetStr("WAERS");//币种
                             var BKTXT = oneOrd.GetStr("BKTXT");//摘要
+                            //需要增加汇率字段
 
                             if (String.IsNullOrEmpty(KUNNR)) continue;//临时加上，应该让sap修改
 
                             Entity mstEntity = null;
                             QueryExpression isExistMst = new QueryExpression("new_sales_testapplyline");
                             isExistMst.Criteria.AddCondition("new_name", ConditionOperator.Equal, BELNR);
+                            isExistMst.Criteria.AddCondition("new_companycode", ConditionOperator.Equal, BUKRS);
+                            isExistMst.Criteria.AddCondition("new_year", ConditionOperator.Equal, GJAHR);
+                            isExistMst.Criteria.AddCondition("new_num", ConditionOperator.Equal, BUZEI);
+                            isExistMst.Criteria.AddCondition("statecode", ConditionOperator.Equal, 0);
                             EntityCollection isExistList = OrganizationServiceAdmin.RetrieveMultiple(isExistMst);
                             bool isCreate = true;
                             if (isExistList != null && isExistList.Entities.Count > 0)
@@ -90,6 +100,14 @@ namespace Truking.CRM.WinSrv.Job
                             }
                             mstEntity["new_name"] = BELNR;
                             mstEntity["new_companycode"] = BUKRS;
+                            mstEntity["new_year"] = GJAHR;
+                            mstEntity["new_num"] = BUZEI;
+                            mstEntity["new_kunnr"] = KUNNR;//保存客户erp编号
+                            mstEntity["new_bstnk"] = BSTNK;//保存客户合同号
+                            if (WRBTR != 0)
+                            {
+                                mstEntity["exchangerate"] = DMBTR / WRBTR;
+                            }
                             Guid accountid = CommonHelper.GetLookUpGuidByStringCode(OrganizationServiceAdmin, "account", "new_sapcode", KUNNR);
                             if (accountid != Guid.Empty)
                             {
@@ -121,7 +139,31 @@ namespace Truking.CRM.WinSrv.Job
                                 mstEntity["new_contract_id"] = new EntityReference("new_contract", contactEC.Entities[0].Id);
                                 mstEntity["ownerid"] = contactEC.Entities[0].GetAttributeValue<EntityReference>("ownerid");
                             }
-                            //Guid contractId = GetLookUpGuidByStringCode(OrganizationServiceAdmin, "new_contract", "new_customercontractno", BSTNK);
+                            else
+                            {
+                                //通过erp订单号（VBELN），找crm订单对应的销售合同
+                                QueryExpression getDD = new QueryExpression("new_ord_orderrequest");
+                                getDD.ColumnSet = new ColumnSet("new_contract_id", "ownerid");
+                                getDD.Criteria.AddCondition("new_erpcode", ConditionOperator.Equal, VBELN);
+                                EntityCollection getDD_EC = OrganizationServiceAdmin.RetrieveMultiple(getDD);
+                                if (getDD_EC != null && getDD_EC.Entities.Count > 0)
+                                {
+                                    mstEntity["new_contract_id"] = getDD_EC.Entities[0].GetAttributeValue<EntityReference>("new_contract_id");
+                                    mstEntity["ownerid"] = getDD_EC.Entities[0].GetAttributeValue<EntityReference>("ownerid");
+                                }
+                                else
+                                {
+                                    //通过erp订单号（VBELN） ，找erp订单对应的销售合同 new_ord_saleorder     new_contract_id
+                                    QueryExpression getERPDD = new QueryExpression("new_ord_saleorder");
+                                    getERPDD.ColumnSet = new ColumnSet("new_contract_id");
+                                    getERPDD.Criteria.AddCondition("new_erpcode", ConditionOperator.Equal, VBELN);
+                                    EntityCollection getERPDD_EC = OrganizationServiceAdmin.RetrieveMultiple(getERPDD);
+                                    if (getERPDD_EC != null && getERPDD_EC.Entities.Count > 0 && getERPDD_EC.Entities[0].Contains("new_contract_id"))
+                                    {
+                                        mstEntity["new_contract_id"] = getERPDD_EC.Entities[0].GetAttributeValue<EntityReference>("new_contract_id");
+                                    }
+                                }
+                            }
 
 
                             mstEntity["new_amount_base"] = new Money(WRBTR);

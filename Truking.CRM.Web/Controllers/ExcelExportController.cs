@@ -172,9 +172,16 @@ namespace Truking.CRM.Web.Controllers
                                     var col6 = getCellValue(sheet, row.GetCell(headerDic["所用设备型号"]));
                                     var datecell = row.GetCell(headerDic["设备出厂年月"]);
                                     DateTime? col7 = null;
-                                    if (datecell != null && datecell.DateCellValue !=null)
+                                    if (datecell != null && !string.IsNullOrEmpty(datecell.ToString()))
                                     {
-                                        col7 = datecell.DateCellValue;
+                                        if (datecell.CellType == CellType.String)
+                                        {
+                                            col7 = Convert.ToDateTime(datecell.ToString());
+                                        }
+                                        else if (datecell.CellType == CellType.Numeric)
+                                        {
+                                            col7 = datecell.DateCellValue;
+                                        }
                                     }
                                     var col8 = getCellValue(sheet, row.GetCell(headerDic["厂区"]));
                                     var col9 = getCellValue(sheet, row.GetCell(headerDic["使用对接人"]));

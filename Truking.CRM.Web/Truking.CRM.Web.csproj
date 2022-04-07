@@ -248,6 +248,7 @@
     <Compile Include="Controllers\FileSrvController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReceiptController.cs" />
+    <Compile Include="Controllers\ServiceReportController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

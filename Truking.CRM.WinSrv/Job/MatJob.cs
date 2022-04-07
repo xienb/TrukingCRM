@@ -110,7 +110,7 @@ namespace Truking.CRM.WinSrv.Job
                         Guid xlGuid = CreateOrGetProductSeries(PRODH1, PRODH1_TEXT, PRODH2, PRODH2_TEXT, PRODH3, PRODH3_TEXT);
                         //Guid wlGuid = CreateOrGetMatGroup(PRODH3, PRODH3_TEXT);
                         Guid cpzGuid = GetProductGroupGuid(SPART);
-                        Guid xhGuid = CreateOrGetProductModel(cpzGuid, ZGUIGE);
+                        //Guid xhGuid = CreateOrGetProductModel(cpzGuid, ZGUIGE);//不再创建产品型号
 
                         Entity entity = null;
                         bool isCreate = true;
@@ -143,10 +143,10 @@ namespace Truking.CRM.WinSrv.Job
                         {
                             entity["new_productgroupid"] = new EntityReference("new_productgroup", cpzGuid);//产品组
                         }
-                        if (xhGuid != Guid.Empty)
-                        {
-                            entity["new_productmodel_id"] = new EntityReference("new_productmodel", xhGuid);//产品型号，对应sap规格
-                        }
+                        //if (xhGuid != Guid.Empty)
+                        //{
+                        //    entity["new_productmodel_id"] = new EntityReference("new_productmodel", xhGuid);//产品型号，对应sap规格
+                        //}
 
                         int? new_itemtype = Getnew_itemtype(MTART);
                         if (new_itemtype != null)

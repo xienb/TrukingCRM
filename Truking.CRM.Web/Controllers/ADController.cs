@@ -120,7 +120,7 @@ namespace Truking.CRM.Web.Controllers
                 }
                 if (code == model.sms)
                 {
-                    SetPassword("truking", "012338", "ctkj.666", model.jobNumber, model.newPassword);
+                    SetPassword("truking", "012338", "ctkj.Hello1234", model.jobNumber, model.newPassword);
                     rv.code = ResponseCode.success;
                     rv.msg = "密码修改成功";
                 }

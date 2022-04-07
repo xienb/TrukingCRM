@@ -76,7 +76,7 @@ namespace Truking.CRM.WinSrv
                 IJobDetail job3 = JobBuilder.Create<SyncRecognitionJob>().Build();
                 ITrigger trigger3 = TriggerBuilder.Create()
                    .StartNow()
-                   .WithSimpleSchedule(x => x.WithIntervalInSeconds(30).RepeatForever())
+                   .WithSimpleSchedule(x => x.WithIntervalInSeconds(15).RepeatForever())
                    .Build();
                 sched.ScheduleJob(job3, trigger3);
 
